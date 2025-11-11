@@ -1,0 +1,24 @@
+{
+  "name": "unit-conversion-calculator",
+  "version": "1.0.0",
+  "description": "A responsive unit conversion calculator for length and weight units",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "python -m http.server 8000"
+  },
+  "keywords": [
+    "calculator",
+    "unit-conversion",
+    "length",
+    "weight",
+    "responsive"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}

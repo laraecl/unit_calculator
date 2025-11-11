@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Conversion Calculator</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📐</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">Unit Conversion Calculator</h1>
+        </header>
+
+        <main class="main">
+            <!-- Tabs Navigation -->
+            <div class="tabs">
+                <button class="tab-button active" data-tab="length">
+                    Feet and Inches Calculator
+                </button>
+                <button class="tab-button" data-tab="weight">
+                    Pounds and Ounces Calculator
+                </button>
+            </div>
+
+            <!-- Length Converter -->
+            <div class="tab-content active" id="length-tab">
+                <div class="calculator-layout">
+                    <div class="input-section">
+                        <div class="input-description">
+                            <p>Stop juggling units! Just type your mixed-up math problem in feet, inches, centimeters, and millimeters, e.g.: <code>7cm + 6' 7 5/8" + 1.25 in</code>.</p>
+                            <p>The best part? 😉It gives you the answer in Imperial and Metric.</p>
+                        </div>
+                        
+                        <div class="input-container">
+                            <input type="text" id="length-input" class="calculation-input" placeholder="7cm + 6' 7 5/8&quot; + 1.25in">
+                            <button class="calculate-btn" onclick="calculateLength()">=</button>
+                        </div>
+
+                        <!-- Virtual Keyboard -->
+                        <div class="virtual-keyboard">
+                            <div class="keyboard-row">
+                                <button class="key-btn unit-btn" onclick="insertText('FT')">FT</button>
+                                <button class="key-btn unit-btn" onclick="insertText('IN')">IN</button>
+                                <button class="key-btn unit-btn" onclick="insertText('M')">M</button>
+                                <button class="key-btn unit-btn" onclick="insertText('CM')">CM</button>
+                            </div>
+                            <div class="keyboard-row">
+                                <button class="key-btn number-btn" onclick="insertText('7')">7</button>
+                                <button class="key-btn number-btn" onclick="insertText('8')">8</button>
+                                <button class="key-btn number-btn" onclick="insertText('9')">9</button>
+                                <button class="key-btn backspace-btn" onclick="backspaceInput()">←</button>
+                            </div>
+                            <div class="keyboard-row">
+                                <button class="key-btn number-btn" onclick="insertText('4')">4</button>
+                                <button class="key-btn number-btn" onclick="insertText('5')">5</button>
+                                <button class="key-btn number-btn" onclick="insertText('6')">6</button>
+                                <button class="key-btn operator-btn" onclick="insertText('-')">-</button>
+                            </div>
+                            <div class="keyboard-row">
+                                <button class="key-btn number-btn" onclick="insertText('1')">1</button>
+                                <button class="key-btn number-btn" onclick="insertText('2')">2</button>
+                                <button class="key-btn number-btn" onclick="insertText('3')">3</button>
+                                <button class="key-btn operator-btn" onclick="insertText('+')">+</button>
+                            </div>
+                            <div class="keyboard-row">
+                                <button class="key-btn number-btn" onclick="insertText('0')">0</button>
+                                <button class="key-btn number-btn" onclick="insertText('.')">.</button>
+                                <button class="key-btn clear-btn" onclick="clearInput()">Clear</button>
+                                <button class="key-btn equals-btn" onclick="calculateLength()">=</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-section">
+                        <!-- History Panel -->
+                        <div class="history-panel">
+                            <div class="history-header">
+                                <h4>Recent Calculations</h4>
+                                <button class="history-toggle" onclick="toggleHistory('length')">▼</button>
+                            </div>
+                            <div class="history-content" id="length-history-content">
+                                <div class="history-item" id="length-history-1">
+                                    <span class="history-equation"></span>
+                                    <span class="history-result"></span>
+                                </div>
+                                <div class="history-item" id="length-history-2">
+                                    <span class="history-equation"></span>
+                                    <span class="history-result"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="result-card">
+                            <h3 class="result-title">Feet and Inches Result</h3>
+                            <div class="result-value" id="length-result-display">0"</div>
+                            
+                            <div class="result-details">
+                                <div class="result-column">
+                                    <h4>Imperial Units</h4>
+                                    <div class="result-item">
+                                        <span class="result-number" id="inches-fraction">0</span>
+                                        <span class="result-unit">Inches (fraction)</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-number" id="inches-decimal">0</span>
+                                        <span class="result-unit">Inches</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-number" id="feet-inches">0</span>
+                                        <span class="result-unit">Feet</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="result-column">
+                                    <h4>Metric Units</h4>
+                                    <div class="result-item">
+                                        <span class="result-number" id="millimeters">0</span>
+                                        <span class="result-unit">Millimeters</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-number" id="centimeters">0</span>
+                                        <span class="result-unit">Centimeters</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-number" id="meters">0</span>
+                                        <span class="result-unit">Meters</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weight Converter -->
+            <div class="tab-content" id="weight-tab">
+                <div class="calculator-layout">
+                    <div class="input-section">
+                        <div class="input-description">
+                            <p>Stop juggling units! Just type your mixed-up math problem in pounds, ounces, and kilograms, e.g.: <code>5 lb 8 oz + 2.5 kg</code>.</p>
+                            <p>The best part? 😉It gives you the answer in Imperial and Metric.</p>
+                        </div>
+                        
+                        <div class="input-container">
+                            <input type="text" id="weight-input" class="calculation-input" placeholder="5 lb 8 oz + 2.5 kg">
+                            <button class="calculate-btn" onclick="calculateWeight()">=</button>
+                        </div>
+
+                        <!-- Virtual Keyboard -->
+                        <div class="virtual-keyboard">
+                            <div class="keyboard-row">
+                                <button class="key-btn unit-btn" onclick="insertWeightText('LB')">LB</button>
+                                <button class="key-btn unit-btn" onclick="insertWeightText('OZ')">OZ</button>
+                                <button class="key-btn unit-btn" onclick="insertWeightText('KG')">KG</button>
+                                <button class="key-btn unit-btn" onclick="insertWeightText('G')">G</button>
+                            </div>
+                            <div class="keyboard-row">
+                                <button class="key-btn number-btn" onclick="insertWeightText('7')">7</button>
+                                <button class="key-btn number-btn" onclick="insertWeightText('8')">8</button>
+                                <button class="key-btn number-btn" onclick="insertWeightText('9')">9</button>
+                                <button class="key-btn backspace-btn" onclick="backspaceWeightInput()">←</button>
+                            </div>
+                            <div class="keyboard-row">
+                                <button class="key-btn number-btn" onclick="insertWeightText('4')">4</button>
+                                <button class="key-btn number-btn" onclick="insertWeightText('5')">5</button>
+                                <button class="key-btn number-btn" onclick="insertWeightText('6')">6</button>
+                                <button class="key-btn operator-btn" onclick="insertWeightText('-')">-</button>
+                            </div>
+                            <div class="keyboard-row">
+                                <button class="key-btn number-btn" onclick="insertWeightText('1')">1</button>
+                                <button class="key-btn number-btn" onclick="insertWeightText('2')">2</button>
+                                <button class="key-btn number-btn" onclick="insertWeightText('3')">3</button>
+                                <button class="key-btn operator-btn" onclick="insertWeightText('+')">+</button>
+                            </div>
+                            <div class="keyboard-row">
+                                <button class="key-btn number-btn" onclick="insertWeightText('0')">0</button>
+                                <button class="key-btn number-btn" onclick="insertWeightText('.')">.</button>
+                                <button class="key-btn clear-btn" onclick="clearWeightInput()">Clear</button>
+                                <button class="key-btn equals-btn" onclick="calculateWeight()">=</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-section">
+                        <!-- History Panel -->
+                        <div class="history-panel">
+                            <div class="history-header">
+                                <h4>Recent Calculations</h4>
+                                <button class="history-toggle" onclick="toggleHistory('weight')">▼</button>
+                            </div>
+                            <div class="history-content" id="weight-history-content">
+                                <div class="history-item" id="weight-history-1">
+                                    <span class="history-equation"></span>
+                                    <span class="history-result"></span>
+                                </div>
+                                <div class="history-item" id="weight-history-2">
+                                    <span class="history-equation"></span>
+                                    <span class="history-result"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="result-card">
+                            <h3 class="result-title">Pounds and Ounces Result</h3>
+                            <div class="result-value" id="weight-result-display">0 lb</div>
+                            
+                            <div class="result-details">
+                                <div class="result-column">
+                                    <h4>Imperial Units</h4>
+                                    <div class="result-item">
+                                        <span class="result-number" id="total-pounds">0</span>
+                                        <span class="result-unit">Pounds</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-number" id="total-ounces">0</span>
+                                        <span class="result-unit">Ounces</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="result-column">
+                                    <h4>Metric Units</h4>
+                                    <div class="result-item">
+                                        <span class="result-number" id="kilograms">0</span>
+                                        <span class="result-unit">Kilograms</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-number" id="grams">0</span>
+                                        <span class="result-unit">Grams</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
